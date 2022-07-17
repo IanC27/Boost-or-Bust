@@ -1,28 +1,19 @@
 
 
-
-
-
-- UI
- - health
- - labels for meters
-- hazards
- - falling rocks
- - floating spikes
- - brief i-frames (with blinking animation)
-
-
-
+- itch.io page
 - moving platforms (you can try again as a last thing if there's time)
 
-- jetpack cooldown
--basic animation/sprite
--boosting animation (or sprite)
+
+- jetpack repair pickups
+
+
 -explode animation
+-explosion/smoke particles
 -art
  -background
  -walls
 -more sound
+- floating spikes
 
 ===============DONE===============
 - lava rising
@@ -30,3 +21,12 @@
 -game over screen - restart prompt
 -jetpack boost logic
 - scorekeeping/display
+- UI
+ - health
+ - labels for meters
+ -basic animation/sprite
+ - hazards
+ - falling rocks
+- jetpack cooldown
+ - brief i-frames (with blinking animation)
+ -boosting animation (or sprite)

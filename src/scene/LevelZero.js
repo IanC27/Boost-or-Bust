@@ -45,7 +45,7 @@ class LevelZero extends Phaser.Scene {
         });
 
         this.add.tileSprite(game.config.width / 2, game.config.height / 2, 400, 350, 'background').setScrollFactor(0)
-        
+
         this.hero = this.physics.add.sprite(this.startingPosition.x, this.startingPosition.y, 'hero', 0);
         this.cameras.main.startFollow(this.hero, true, 0.1, 0.1, 0, 75);
         this.cameras.main.setDeadzone(game.config.width, 50);
@@ -235,7 +235,10 @@ class LevelZero extends Phaser.Scene {
                 gameOverTextConfig.color = '#00ff00';
                 gameOverStuff.add(this.add.text(game.config.width / 2, game.config.height / 2 + 10, `New high score: ${this.score}`, gameOverTextConfig).setScrollFactor(0));
                 gameOverTextConfig.color = '#000000';
-                gameOverStuff.add(this.add.text(game.config.width / 2, game.config.height / 2 + 30, `Previous high score: ${currentBest}`, gameOverTextConfig).setScrollFactor(0));
+                if (currentBest) {
+                    gameOverStuff.add(this.add.text(game.config.width / 2, game.config.height / 2 + 30, `Previous high score: ${currentBest}`, gameOverTextConfig).setScrollFactor(0));
+                }
+                
                 
             } else {
                 gameOverStuff.add(this.add.text(game.config.width / 2, game.config.height / 2 + 10, `Your score: ${this.score}`, gameOverTextConfig).setScrollFactor(0));

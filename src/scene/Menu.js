@@ -22,7 +22,7 @@ class Menu extends Phaser.Scene {
             wordWrap: {width: game.config.width - 20},
         }
 
-        this.add.text(game.config.width / 2, 70, 'Boost\nor\nBust', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width / 2, 70, 'Boost or Bust', menuConfig).setOrigin(0.5);
 
         menuConfig.fontSize = '14px';
         this.add.text(game.config.width / 2, game.config.height - 90, 'A and D to move left/right.\nShift key to attempt a boost with your jetpack', menuConfig).setOrigin(0.5);

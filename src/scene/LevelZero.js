@@ -17,8 +17,9 @@ class LevelZero extends Phaser.Scene {
         this.load.image('lava', 'assets/lava.png');
         this.load.image('lifeHeart', 'assets/life_heart.png');
         this.load.image('boulder', 'assets/boulder.png');
-        
         this.load.image('darkCobbles', 'assets/cobbleTileDark.png');
+        this.load.image('repairKit', 'assets/repairKit.png');
+        this.load.image('healthPack', 'assets/healthPack.png');
 
         this.load.audio('boost', 'assets/booost.wav');
         this.load.audio('explode', 'assets/Explosion9.wav');
@@ -122,7 +123,7 @@ class LevelZero extends Phaser.Scene {
         const textConfigUI = {
             fontFamily: 'Consolas',
             fontSize: '15px',
-            color: '#000000',
+            color: '#ffffff',
             align: 'center',
             padding: {
                 top: 5,
@@ -131,7 +132,7 @@ class LevelZero extends Phaser.Scene {
         }
         this.add.text(game.config.width / 2, game.config.height - 60, 'Jetpack', textConfigUI).setOrigin(0.5).setScrollFactor(0).setDepth(1);
         
-        this.jetpackHealthBar = this.add.rectangle(game.config.width / 2, game.config.height - 45, game.config.width / 2, 12, 0xff0000);
+        this.jetpackHealthBar = this.add.rectangle(game.config.width / 2, game.config.height - 45, game.config.width / 2, 12, 0x002166);
         this.jetpackHealthBar.setScrollFactor(0, 0);
         this.jetpackHealthBar.setDepth(1);
 
@@ -257,7 +258,14 @@ class LevelZero extends Phaser.Scene {
         }
 
         if (this.score >= this.nextWaveAt) {
-            console.log("next wave");
+            //console.log("next wave");
+            const chance = Math.random();
+            if (chance >= 0.66) {
+               this.spawnRepairPickup();
+            } else if (chance >= 0.33) {
+                this.spawnHealthPickup()
+            }
+
             if (this.nextWaveAt >= 200) {
                 // double the rate of rocks
                 this.fallingRockEvent.timeScale = 2;
@@ -292,7 +300,7 @@ class LevelZero extends Phaser.Scene {
             // 3 sec invulnerability
             this.time.delayedCall(2000, () => {
                 this.invulnerable = false;
-                console.log("invulnerability over");
+                //console.log("invulnerability over");
             });
             this.tweens.add({
                 targets: this.hero,
@@ -308,6 +316,28 @@ class LevelZero extends Phaser.Scene {
                 this.gameOver();
             }
         }
+    }
+
+    spawnRepairPickup() {
+        const randX = randomRange(64, game.config.width - 64);
+                let kit = this.physics.add.sprite(randX, this.nextPlatformY - 16, 'repairKit');
+                this.physics.add.overlap(this.hero, kit, (player, pickup) => {
+                    this.jetpackIntegrity = 1;
+                    this.jetpackHealthBar.displayWidth = game.config.width / 2;
+                    this.jetpackHealthText.text = '100%';
+                    pickup.destroy();
+                });
+
+    }
+
+    spawnHealthPickup() {
+        const randX = randomRange(64, game.config.width - 64);
+                let health = this.physics.add.sprite(randX, this.nextPlatformY - 16, 'healthPack');
+                this.physics.add.overlap(this.hero, health, (player, pickup) => {
+                    this.life += 1;
+                    this.hearts.width = this.life * 32;
+                    pickup.destroy();
+                });
     }
 
     gameOver() {

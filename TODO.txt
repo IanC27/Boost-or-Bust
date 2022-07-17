@@ -4,8 +4,6 @@
 - moving platforms (you can try again as a last thing if there's time)
 
 
-- jetpack repair pickups
-- health pickups
 
 
 -explode animation
@@ -34,3 +32,5 @@
  -art
  -background
  -walls
+ - jetpack repair pickups
+- health pickups

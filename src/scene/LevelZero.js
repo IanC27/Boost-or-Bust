@@ -6,12 +6,7 @@ class LevelZero extends Phaser.Scene {
     }
 
     preload() {
-        let heroDimensions = {
-            frameWidth: 16,
-            frameHeight: 32
-        };
-
-        this.load.spritesheet('hero', 'assets/hero-sheet.png', heroDimensions);
+        
         
         this.load.image('platform', 'assets/platform.png');
         this.load.image('lava', 'assets/lava.png');
@@ -37,20 +32,6 @@ class LevelZero extends Phaser.Scene {
         this.PLATFORM_HEIGHT = 70;
         this.LAVA_SPEED = 30;
         this.startingPosition = {x: game.config.width / 2, y:game.config.height - 32};
-
-        
-        this.gui = new dat.GUI();
-        let playerFolder = this.gui.addFolder('Parameters');
-        playerFolder.add(this, 'VELOCITY', 0, 1000).step(10);
-        playerFolder.add(this, 'JUMP_VELOCITY', -400, 0).step(10);
-        playerFolder.add(this, 'BOOST_VELOCITY', -400, 0).step(10);
-        playerFolder.add(this, 'Y_GRAVITY', 0, 350).step(10);
-        playerFolder.add(this, 'PLATFORM_SPREAD', 0, 272);
-        playerFolder.add(this, 'PLATFORM_HEIGHT', 70, 120);
-        playerFolder.add(this, 'LAVA_SPEED', 10, 100);
-        
-        playerFolder.open()
-        
 
         this.controls = this.input.keyboard.addKeys({
             jump: 'SPACE',

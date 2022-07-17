@@ -1,6 +1,6 @@
 
 
-- itch.io page
+
 - moving platforms (you can try again as a last thing if there's time)
 
 
@@ -9,9 +9,8 @@
 -explode animation
 -explosion/smoke particles
 
-- improved title screen
-- music
--more sound
+
+
 - floating spikes
 
 ===============DONE===============
@@ -34,3 +33,8 @@
  -walls
  - jetpack repair pickups
 - health pickups
+- improved title screen
+- itch.io page
+- music
+-more sound
+ - pickups

@@ -19,6 +19,11 @@ class LevelZero extends Phaser.Scene {
         this.load.audio('boost', 'assets/booost.wav');
         this.load.audio('explode', 'assets/Explosion9.wav');
         this.load.audio('jump', 'assets/Jump3.wav');
+        this.load.audio('lose', 'assets/lose.wav');
+        this.load.audio('getItem', 'assets/get.wav');
+        // music by Jan125: https://opengameart.org/content/stereotypical-90s-space-shooter-music
+        this.load.audio('song', 'assets/boss.ogg');
+
 
     }
 
@@ -134,8 +139,12 @@ class LevelZero extends Phaser.Scene {
         this.invulnerable = false;
         this.score = 0;
         this.justDown = false;
-
         this.nextWaveAt = 50;
+
+        // Music
+        this.music = this.sound.add('song');
+        this.music.setLoop(true);
+        this.music.play();
 
         // lava starts slow at first
         this.time.delayedCall(5000, () => {
@@ -175,7 +184,7 @@ class LevelZero extends Phaser.Scene {
             this.justDown = false
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.controls.boost) && this.boostReady){
+        if (Phaser.Input.Keyboard.JustDown(this.controls.boost) && this.boostReady && !this.invulnerable){
             if (this.rollForBoost()) {
                 this.sound.play('boost');
                 this.jetpackIntegrity -= this.jetpackIntegrity / 3;
@@ -303,6 +312,7 @@ class LevelZero extends Phaser.Scene {
         const randX = randomRange(64, game.config.width - 64);
                 let kit = this.physics.add.sprite(randX, this.nextPlatformY - 16, 'repairKit');
                 this.physics.add.overlap(this.hero, kit, (player, pickup) => {
+                    this.sound.play('getItem');
                     this.jetpackIntegrity = 1;
                     this.jetpackHealthBar.displayWidth = game.config.width / 2;
                     this.jetpackHealthText.text = '100%';
@@ -315,6 +325,7 @@ class LevelZero extends Phaser.Scene {
         const randX = randomRange(64, game.config.width - 64);
                 let health = this.physics.add.sprite(randX, this.nextPlatformY - 16, 'healthPack');
                 this.physics.add.overlap(this.hero, health, (player, pickup) => {
+                    this.sound.play('getItem');
                     this.life += 1;
                     this.hearts.width = this.life * 32;
                     pickup.destroy();
@@ -324,6 +335,9 @@ class LevelZero extends Phaser.Scene {
     gameOver() {
         this.hero.setTintFill(0x770000)
         this.hero.disableBody();
+
+        this.music.stop();
+        this.sound.play('lose');
         
         const gameOverTextConfig = {
             fontFamily: 'Consolas',
@@ -336,9 +350,9 @@ class LevelZero extends Phaser.Scene {
             }
         };
 
+        
         const gameOverStuff = this.add.group()
         
-
         const fadeOut = this.add.rectangle(0, 0, game.config.width, game.config.height, 0xff5500)
             .setDepth(1)
             .setScrollFactor(0)

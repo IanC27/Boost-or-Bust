@@ -45,6 +45,13 @@ class Menu extends Phaser.Scene {
             this.scene.start("LevelZero");
         })
 
+        this.input.keyboard.createCombo('reset');
+
+        this.input.keyboard.on('keycombomatch', () => {
+            localStorage.setItem('highScore', 0);
+            console.log('high score reset');
+        })
+
     }
 
     update(time, delta) {

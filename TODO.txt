@@ -1,0 +1,32 @@
+
+
+
+
+
+- UI
+ - health
+ - labels for meters
+- hazards
+ - falling rocks
+ - floating spikes
+ - brief i-frames (with blinking animation)
+
+
+
+- moving platforms (you can try again as a last thing if there's time)
+
+- jetpack cooldown
+-basic animation/sprite
+-boosting animation (or sprite)
+-explode animation
+-art
+ -background
+ -walls
+-more sound
+
+===============DONE===============
+- lava rising
+-title screen and basic tutorial
+-game over screen - restart prompt
+-jetpack boost logic
+- scorekeeping/display

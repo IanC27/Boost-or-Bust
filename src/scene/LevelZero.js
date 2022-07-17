@@ -310,7 +310,7 @@ class LevelZero extends Phaser.Scene {
 
     spawnRepairPickup() {
         const randX = randomRange(64, game.config.width - 64);
-                let kit = this.physics.add.sprite(randX, this.nextPlatformY - 16, 'repairKit');
+                let kit = this.physics.add.sprite(randX, this.nextPlatformY - 32, 'repairKit');
                 this.physics.add.overlap(this.hero, kit, (player, pickup) => {
                     this.sound.play('getItem');
                     this.jetpackIntegrity = 1;
@@ -323,7 +323,7 @@ class LevelZero extends Phaser.Scene {
 
     spawnHealthPickup() {
         const randX = randomRange(64, game.config.width - 64);
-                let health = this.physics.add.sprite(randX, this.nextPlatformY - 16, 'healthPack');
+                let health = this.physics.add.sprite(randX, this.nextPlatformY - 32, 'healthPack');
                 this.physics.add.overlap(this.hero, health, (player, pickup) => {
                     this.sound.play('getItem');
                     this.life += 1;

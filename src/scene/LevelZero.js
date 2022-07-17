@@ -12,12 +12,13 @@ class LevelZero extends Phaser.Scene {
         };
 
         this.load.spritesheet('hero', 'assets/hero-sheet.png', heroDimensions);
-        this.load.image('protoTiles', 'assets/protoTiles.png');
-        this.load.image('background', 'assets/background.png');
+        
         this.load.image('platform', 'assets/platform.png');
         this.load.image('lava', 'assets/lava.png');
         this.load.image('lifeHeart', 'assets/life_heart.png');
         this.load.image('boulder', 'assets/boulder.png');
+        
+        this.load.image('darkCobbles', 'assets/cobbleTileDark.png');
 
         this.load.audio('boost', 'assets/booost.wav');
         this.load.audio('explode', 'assets/Explosion9.wav');
@@ -57,7 +58,7 @@ class LevelZero extends Phaser.Scene {
             right: 'D'
         });
 
-        this.add.tileSprite(game.config.width / 2, game.config.height / 2, 400, 350, 'background').setScrollFactor(0);
+        this.background = this.add.tileSprite(game.config.width / 2, game.config.height / 2, 400, 350, 'cobbles').setScrollFactor(0, 0);
 
         this.hero = this.physics.add.sprite(this.startingPosition.x, this.startingPosition.y, 'hero', 1);
         this.cameras.main.startFollow(this.hero, true, 0.1, 0.1, 0, 0);
@@ -80,12 +81,22 @@ class LevelZero extends Phaser.Scene {
             this.createPlatform();
         }
 
-        this.walls = this.physics.add.staticGroup();
-        this.walls.add( this.add.rectangle(game.config.width / 2, game.config.height - 16, game.config.width, 128, 0xffffff).setOrigin(0.5, 0))
-        this.walls.add( this.add.rectangle(0, 0, 32, game.config.height, 0x000000).setOrigin(0, 0).setScrollFactor(0));
-        this.walls.add( this.add.rectangle(game.config.width - 32, 0, 32, game.config.height, 0x000000).setOrigin(0, 0).setScrollFactor(0));
+        this.platforms.add(this.add.tileSprite(game.config.width / 2, game.config.height - 16, game.config.width, 128, 'darkCobbles').setOrigin(0.5, 0));
 
-        this.physics.add.collider(this.hero, this.walls);
+       
+        this.leftWall = this.physics.add.existing(this.add.rectangle(0, 0, 32, game.config.height).setOrigin(0));
+        this.rightWall = this.physics.add.existing(this.add.rectangle(game.config.width - 32, 0, 32, game.config.height).setOrigin(0));
+        this.leftWall.body.setImmovable();
+        this.rightWall.body.setImmovable();
+
+        this.walls = this.add.group();
+        this.walls.add(this.add.tileSprite(0, 0, 32, game.config.height, 'darkCobbles').setScrollFactor(0));
+        this.walls.add(this.add.tileSprite(game.config.width - 32, 0, 32, game.config.height, 'darkCobbles').setScrollFactor(0));
+        this.walls.setOrigin(0);
+
+        this.physics.add.collider(this.hero, this.leftWall);
+        this.physics.add.collider(this.hero, this.rightWall);
+
 
         // hazards
 
@@ -131,7 +142,7 @@ class LevelZero extends Phaser.Scene {
         this.jetpackHealthText = this.add.text(game.config.width / 2, game.config.height - 45, '100%', textConfigUI).setOrigin(0.5).setScrollFactor(0).setDepth(1);
 
         this.scoreText = this.add.text(40, 5, 'Distance: 0m', textConfigUI).setOrigin(0).setScrollFactor(0).setDepth(1);
-        this.hearts = this.add.tileSprite(game.config.width - 32, 5, 32*this.STARTING_HEALTH, 32, 'lifeHeart').setOrigin(1, 0).setScrollFactor(0);
+        this.hearts = this.add.tileSprite(game.config.width - 32, 5, 32*this.STARTING_HEALTH, 32, 'lifeHeart').setOrigin(1, 0).setScrollFactor(0).setDepth(1);
 
         // STATUS
         this.boostReady = true;
@@ -154,6 +165,11 @@ class LevelZero extends Phaser.Scene {
         let distance = this.startingPosition.y - this.hero.y;
         this.score = Math.floor(distance / 16);
         this.scoreText.text = `Distance: ${this.score}m`;
+
+        this.background.tilePositionY = this.cameras.main.scrollY;
+        this.walls.propertyValueSet('tilePositionY', this.cameras.main.scrollY);
+        this.leftWall.y = this.cameras.main.scrollY;
+        this.rightWall.y = this.cameras.main.scrollY;
         
         this.hero.setGravityY(this.Y_GRAVITY);
 

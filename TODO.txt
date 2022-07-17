@@ -5,13 +5,14 @@
 
 
 - jetpack repair pickups
+- health pickups
 
 
 -explode animation
 -explosion/smoke particles
--art
- -background
- -walls
+
+- improved title screen
+- music
 -more sound
 - floating spikes
 
@@ -30,3 +31,6 @@
 - jetpack cooldown
  - brief i-frames (with blinking animation)
  -boosting animation (or sprite)
+ -art
+ -background
+ -walls

@@ -4,9 +4,12 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image('cobbles', 'assets/cobbleTile.png');
     }
 
     create() {
+        this.backdrop = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'cobbles').setOrigin(0);
+
         let menuConfig = {
             fontFamily: 'Consolas',
             fontSize: '30px',
@@ -25,12 +28,16 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width / 2, game.config.height - 90, 'A and D to move left/right.\nShift key to attempt a boost with your jetpack', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width / 2, game.config.height / 2, `You are in possesion of an old jetpack. It may come in handy as you try to escape this volcano. But watch out! As you use it, it will become more damaged and will have an increased likelihood of backfiring and hurting you so use it wisely.`,
                                                                         menuConfig).setOrigin(0.5);
-        menuConfig.color = '#449900';
-        this.add.text(game.config.width / 2, game.config.height - 20, 'Press the boost key to begin').setOrigin(0.5);
+        menuConfig.color = '#ffff00';
+        this.add.text(game.config.width / 2, game.config.height - 20, 'Press the boost key to begin', menuConfig).setOrigin(0.5);
 
         this.input.keyboard.on('keydown-SHIFT', () => {
             this.scene.start("LevelZero");
         })
 
+    }
+
+    update(time, delta) {
+        this.backdrop.tilePositionY += delta * 0.07
     }
 }
